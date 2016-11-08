@@ -1,0 +1,23 @@
+#!/usr/bin/env php
+<?php
+
+$cwd = getcwd();
+if (substr($cwd, -3, 3) != 'bin') {
+	echo 'Please enter right directory "bin", and retry! '.PHP_EOL;
+    exit(1);
+}
+
+require __DIR__.'/../src/bootstrap.php';
+
+use Overtrue\PHPLint\Compiler;
+
+error_reporting(-1);
+ini_set('display_errors', 1);
+
+try {
+    $compiler = new Compiler();
+    $compiler->compile();
+} catch (\Exception $e) {
+    echo 'Failed to compile phar: ['.get_class($e).'] '.$e->getMessage().' at '.$e->getFile().':'.$e->getLine().PHP_EOL;
+    exit(1);
+}
